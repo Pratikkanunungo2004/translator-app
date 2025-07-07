@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Language Translator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      padding: 20px;
+    }
+    .container {
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    textarea {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    select, button {
+      padding: 10px;
+      font-size: 16px;
+      margin-right: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .output {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #e9ecef;
+      border-radius: 5px;
+      min-height: 60px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>🌍 Language Translator</h2>
+    <textarea id="inputText" placeholder="Enter text in English..."></textarea>
+    <br>
+    <select id="langSelect">
+      <option value="hi">Hindi</option>
+      <option value="fr">French</option>
+      <option value="es">Spanish</option>
+      <option value="de">German</option>
+      <option value="bn">Bengali</option>
+      <option value="ta">Tamil</option>
+      <option value="gu">Gujarati</option>
+      <option value="te">Telugu</option>
+    </select>
+    <button onclick="translateText()">Translate</button>
+    <div class="output" id="outputArea"></div>
+  </div>
+
+  <script>
+    async function translateText() {
+      const text = document.getElementById("inputText").value;
+      const target = document.getElementById("langSelect").value;
+
+      const res = await fetch("/translate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: text, target: target })
+      });
+
+      const data = await res.json();
+      document.getElementById("outputArea").innerText = data.translated_text;
+    }
+  </script>
+</body>
+</html>
